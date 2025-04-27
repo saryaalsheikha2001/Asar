@@ -1,20 +1,24 @@
 import 'package:get/get.dart';
 
 class Hamla {
-  final String teamName;
-  final String image;
-  final String managerName;
-  final int membersCount;
-  final String equipment;
-  final String time;
+  final String? teamName;
+  final String? image;
+  final String? managerName;
+  final int? membersCount;
+  final String? equipment;
+  final String? time;
+  final String? description; // <-- جديد
+  final String? phoneNumber; // <-- جديد
 
   Hamla({
-    required this.teamName,
-    required this.image,
-    required this.managerName,
-    required this.membersCount,
-    required this.equipment,
-    required this.time,
+    this.teamName,
+    this.image,
+    this.managerName,
+    this.membersCount,
+    this.equipment,
+    this.time,
+    this.description, // <-- جديد
+    this.phoneNumber, // <-- جديد
   });
 }
 
@@ -29,17 +33,59 @@ class HamlaController extends GetxController {
   }
 
   void loadDonations() {
-    donations.value = List.generate(
-      5,
-      (index) => Hamla(
-        teamName: 'فريق ${index + 1}',
+    donations.value = [
+      Hamla(
+        teamName: 'حملة تنظيف مشفى المجتهد',
         image: 'assets/images/photo_2025-04-16_14-38-02-removebg-preview.png',
         managerName: 'أحمد العلي',
-        membersCount: 10 + index,
-        equipment: 'معدات تنظيف، قفازات، أكياس',
-        time: 'السبت الساعة ${9 + index} صباحًا',
+        membersCount: 12,
+        equipment: 'معدات تنظيف، قفازات، كمامات',
+        time: 'السبت الساعة 9 صباحًا',
+        description: 'تنظيف مشفى المجتهد لتعقيم الصالات والغرف.',
+        phoneNumber: '0934123456',
       ),
-    );
+      Hamla(
+        teamName: 'حملة تشجير شارع الميدان',
+        image: 'assets/images/photo_2025-04-16_14-38-02-removebg-preview.png',
+        managerName: 'ليلى عبد الرحمن',
+        membersCount: 20,
+        equipment: 'أدوات زراعة، شتول، أسمدة',
+        time: 'الأحد الساعة 10 صباحًا',
+        description: 'تشجير الأرصفة في شارع الميدان.',
+        phoneNumber: '0934987654',
+      ),
+      Hamla(
+        teamName: 'حملة دعم مستشفى الأطفال',
+        image: 'assets/images/photo_2025-04-16_14-38-02-removebg-preview.png',
+        managerName: 'مروان حمزة',
+        membersCount: 15,
+        equipment: 'مستلزمات طبية، أقنعة، قفازات',
+        time: 'الإثنين الساعة 11 صباحًا',
+        description: 'حملة إسعافات أولية لدعم مستشفى الأطفال.',
+        phoneNumber: '0934001122',
+      ),
+      Hamla(
+        teamName: 'حملة نظافة حديقة تشرين',
+        image: 'assets/images/photo_2025-04-16_14-38-02-removebg-preview.png',
+        managerName: 'سمر ديوب',
+        membersCount: 18,
+        equipment: 'أدوات نظافة، أكياس قمامة',
+        time: 'الثلاثاء الساعة 8 صباحًا',
+        description: 'تنظيف حديقة تشرين وتحسين مظهرها العام.',
+        phoneNumber: '0934223344',
+      ),
+      Hamla(
+        teamName: 'حملة صيانة مدارس دمشق',
+        image: 'assets/images/photo_2025-04-16_14-38-02-removebg-preview.png',
+        managerName: 'باسل شلهوب',
+        membersCount: 10,
+        equipment: 'أدوات صيانة، دهانات، فرش',
+        time: 'الأربعاء الساعة 9 صباحًا',
+        description: 'ترميم وصيانة مدارس دمشق قبل بداية العام الدراسي.',
+        phoneNumber: '0934556677',
+      ),
+    ];
+
     filteredDonations.value = donations;
   }
 
@@ -47,9 +93,8 @@ class HamlaController extends GetxController {
     if (query.isEmpty) {
       filteredDonations.value = donations;
     } else {
-      filteredDonations.value = donations
-          .where((d) => d.teamName.contains(query))
-          .toList();
+      filteredDonations.value =
+          donations.where((d) => d.teamName!.contains(query)).toList();
     }
   }
 }

@@ -5,13 +5,17 @@ import 'package:athar_project/admin/add_hamla.dart';
 import 'package:athar_project/admin/buttom_navigation_bar/buttom_navigation_bar_page.dart';
 import 'package:athar_project/admin/profile_for_admin/edit_profile_admin.dart';
 import 'package:athar_project/admin/homepageadmin.dart';
+import 'package:athar_project/core/models/pr2.dart';
 import 'package:athar_project/homepage/HomePage.dart';
 import 'package:athar_project/splashScreen/splash_screen.dart';
 import 'package:athar_project/volunter/buttom_navigation_bar/buttom_navigation_bar_voulnter.dart';
+import 'package:athar_project/volunter/details_about_voulnter/detail_voulnter_controller.dart';
 import 'package:athar_project/volunter/details_about_voulnter/details_voulnter.dart';
 import 'package:athar_project/volunter/edit_profile_voulnter.dart';
 import 'package:athar_project/volunter/homepage_voulnter.dart';
+import 'package:athar_project/volunter/joined_with_hamla_controller.dart';
 import 'package:athar_project/volunter/login/login_voulnter.dart';
+import 'package:athar_project/volunter/profile_voulnter_page.dart';
 import 'package:athar_project/volunter/shakawa.dart';
 import 'package:athar_project/volunter/sinup/sinup_voulnter.dart';
 import 'package:athar_project/volunter/tabroat.dart';
@@ -25,6 +29,8 @@ void main() async {
   await GetStorage.init();
 
   Get.put(HomePageController());
+  Get.put(JoinedCampaignController());
+  Get.put(detail_voulnter_controller());
 
   runApp(const MyApp());
 }
@@ -39,6 +45,7 @@ class MyApp extends StatelessWidget {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      // home: ProductView(),
       initialRoute: "/splashscreen",
       getPages: [
         GetPage(name: "/splashscreen", page: () => const SplashScreen()),
@@ -74,9 +81,10 @@ class MyApp extends StatelessWidget {
         ),
 
         GetPage(name: "/Tabroat", page: () => Tabroat()),
-        GetPage(name: "/Shakawa", page: () => Shakawa()),
+        GetPage(name: "/Shakawa", page: () => ComplaintsPage()),
+        GetPage(name: "/editProfile", page: () => ProfileVoulnter()),
         GetPage(
-          name: "/EditProfileVoulnter",
+          name: "/edit_profile_voulnter",
           page: () => EditProfileVoulnter(),
         ),
       ],

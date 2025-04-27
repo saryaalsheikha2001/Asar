@@ -126,7 +126,7 @@ class detail_voulnter extends StatelessWidget {
                 ),
                 onPressed: controller.save,
                 child: const Text(
-                  'تعديل المعلومات',
+                  'حفظ المعلومات',
                   style: TextStyle(color: Colors.white),
                 ),
               ),

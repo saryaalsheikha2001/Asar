@@ -1,37 +1,21 @@
+import 'package:athar_project/volunter/joined_with_hamla_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../home_page_controller.dart';
 
-class hamla_details extends StatefulWidget {
+class HamlaDetails extends StatelessWidget {
   final Hamla donation;
 
-  const hamla_details({required this.donation, required hamla});
-
-  @override
-  State<hamla_details> createState() => _HamlaDetailsState();
-}
-
-class _HamlaDetailsState extends State<hamla_details> {
-  bool isJoined = false; // المستخدم لم ينضم بعد
-
-  void _joinCampaign() {
-    setState(() {
-      isJoined = true;
-    });
-    Get.snackbar(
-      'تم الانضمام',
-      'لقد انضممت إلى الحملة بنجاح',
-      snackPosition: SnackPosition.BOTTOM,
-    );
-  }
+  const HamlaDetails({required this.donation, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final hamla = widget.donation;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(hamla.teamName, style: TextStyle(color: Colors.white)),
+        title: Text(
+          donation.teamName ?? '',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Color.fromRGBO(0, 51, 102, 1),
       ),
       body: Padding(
@@ -45,90 +29,90 @@ class _HamlaDetailsState extends State<hamla_details> {
               ),
             ),
             SizedBox(height: 16),
-            Container(
-              width: 95,
-              height: 50,
-              child: Center(
-                child: Text(
-                  'اسم الحملة: ${hamla.teamName}',
-                  textAlign: TextAlign.right,
-                ),
-              ),
+            InfoTile(title: 'اسم الحملة', value: donation.teamName),
+            InfoTile(title: 'مدير الحملة', value: donation.managerName),
+            InfoTile(
+              title: 'رقم التواصل مع المشرف',
+              value: donation.phoneNumber,
             ),
+            InfoTile(title: 'عدد الأعضاء', value: '${donation.membersCount}'),
+            InfoTile(title: 'الموقع', value: 'دمشق'),
+            InfoTile(title: 'المعدات اللازمة', value: donation.equipment),
+            InfoTile(title: 'وقت الحملة', value: donation.time),
+            InfoTile(title: 'رقم التواصل', value: donation.phoneNumber),
             Container(
-              width: 95,
-              height: 50,
-              child: Center(
-                child: Text(
-                  'مدير الحملة: ${hamla.managerName}',
-                  textAlign: TextAlign.right,
-                ),
-              ),
-            ),
-            Container(
-              height: 50,
-              width: 95,
-              child: Center(
-                child: Text(
-                  'عدد الأعضاء: ${hamla.membersCount}',
-                  textAlign: TextAlign.right,
-                ),
-              ),
-            ),
-            Container(
-              height: 75,
-              width: 95,
-              child: Center(
-                child: Text('الموقع: دمشق', textAlign: TextAlign.right),
-              ),
-            ),
-            Container(
-              height: 50,
-              width: 95,
-              child: Center(
-                child: Text(
-                  'المعدات اللازمة: ${hamla.equipment}',
-                  textAlign: TextAlign.right,
-                ),
-              ),
-            ),
-            Container(
-              height: 50,
-              width: 95,
-              child: Center(
-                child: Text(
-                  'وقت الحملة: ${hamla.time}',
-                  textAlign: TextAlign.right,
-                ),
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                'وصف الحملة:\n${donation.description ?? ''}',
+                textAlign: TextAlign.right,
+                style: TextStyle(fontSize: 16),
               ),
             ),
             SizedBox(height: 20),
 
             // زر الانضمام
-            ElevatedButton.icon(
-              onPressed: isJoined ? null : _joinCampaign,
-              icon: Icon(Icons.how_to_reg, color: Colors.white),
-              label: Text(
-                isJoined ? 'تم الانضمام' : 'انضم إلى الحملة',
-                style: TextStyle(color: Colors.white),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    isJoined ? Colors.grey : Color.fromRGBO(0, 51, 102, 1),
-              ),
+            ElevatedButton(
+              onPressed: () async {
+                final joinedCampaignController =
+                    Get.find<JoinedCampaignController>();
+
+                if (joinedCampaignController.joinedCampaigns.isNotEmpty) {
+                  Get.snackbar(
+                    'خطأ',
+                    'أنت مشترك بحملة بالفعل، انتظر انتهاء الحملة الحالية.',
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                  return;
+                }
+
+                await joinedCampaignController.joinCampaign(donation);
+                Get.snackbar(
+                  'نجاح',
+                  'تم الاشتراك في الحملة بنجاح!',
+                  snackPosition: SnackPosition.TOP,
+                );
+                Get.snackbar(
+                  'نجاح',
+                  'تم الاشتراك في الحملة بنجاح!',
+                  snackPosition: SnackPosition.TOP,
+                );
+                Get.back();
+              },
+              child: Text('اشترك بالحملة'),
             ),
 
             SizedBox(height: 16),
 
-            // زر المحادثة (حاليًا غير مفعل)
+            // زر المحادثة (غير مفعل)
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                // ممكن مستقبلا تفعّل المحادثة هنا
+              },
               icon: Icon(Icons.chat),
               label: Text('محادثة', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class InfoTile extends StatelessWidget {
+  final String title;
+  final String? value;
+
+  const InfoTile({required this.title, required this.value, Key? key})
+    : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      width: 95,
+      child: Center(
+        child: Text('$title: ${value ?? ''}', textAlign: TextAlign.right),
       ),
     );
   }

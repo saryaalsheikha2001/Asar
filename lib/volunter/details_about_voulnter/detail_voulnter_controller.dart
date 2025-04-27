@@ -45,21 +45,39 @@ class detail_voulnter_controller extends GetxController {
       return;
     }
 
-    if (formKey.currentState!.validate() && selectedProvince.isNotEmpty) {
-      Get.snackbar('نجاح', 'تم تحديث المعلومات بنجاح');
-      Future.delayed(Duration(seconds: 1), () {
-        Get.offAllNamed('/buttom_navigation_bar_voulnter');
-      });
-    } else {
-      if (selectedProvince.isEmpty) {
-        Get.snackbar(
-          'تنبيه',
-          'يرجى اختيار المحافظة',
-          backgroundColor: Colors.orange,
-          colorText: Colors.white,
-        );
-      }
+    if (!formKey.currentState!.validate()) {
+      // الفورم فيه أخطاء
+      return;
     }
+
+    if (selectedProvince.value.isEmpty) {
+      Get.snackbar(
+        'تنبيه',
+        'يرجى اختيار المحافظة',
+        backgroundColor: Colors.orange,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    // ✅ كل شيء صحيح، نحدث البيانات
+    nameController.text = nameController.text.trim();
+    phoneController.text = phoneController.text.trim();
+    specializationController.text = specializationController.text.trim();
+    selectedProvince.value = selectedProvince.value;
+    avatarPath.value = avatarPath.value;
+
+    // ✅ عرض رسالة نجاح
+    Get.snackbar(
+      'نجاح',
+      'تم تحديث المعلومات بنجاح',
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+    );
+
+    Future.delayed(const Duration(seconds: 1), () {
+      Get.offAllNamed('/buttom_navigation_bar_voulnter');
+    });
   }
 
   @override
