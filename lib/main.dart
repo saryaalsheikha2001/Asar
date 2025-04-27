@@ -5,7 +5,6 @@ import 'package:athar_project/admin/add_hamla.dart';
 import 'package:athar_project/admin/buttom_navigation_bar/buttom_navigation_bar_page.dart';
 import 'package:athar_project/admin/profile_for_admin/edit_profile_admin.dart';
 import 'package:athar_project/admin/homepageadmin.dart';
-import 'package:athar_project/core/models/pr2.dart';
 import 'package:athar_project/homepage/HomePage.dart';
 import 'package:athar_project/splashScreen/splash_screen.dart';
 import 'package:athar_project/volunter/buttom_navigation_bar/buttom_navigation_bar_voulnter.dart';
