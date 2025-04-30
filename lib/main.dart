@@ -18,6 +18,7 @@ import 'package:athar_project/volunter/profile_voulnter_page.dart';
 import 'package:athar_project/volunter/shakawa.dart';
 import 'package:athar_project/volunter/sinup/sinup_voulnter.dart';
 import 'package:athar_project/volunter/tabroat.dart';
+import 'package:athar_project/volunter/volunteer_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -30,6 +31,7 @@ void main() async {
   Get.put(HomePageController());
   Get.put(JoinedCampaignController());
   Get.put(detail_voulnter_controller());
+  Get.put(StorageService());
 
   runApp(const MyApp());
 }

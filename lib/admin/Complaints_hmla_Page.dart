@@ -12,6 +12,7 @@ class ComplaintsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xffF5FAFF),
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: const Color(0xff003366),
         title: const Text('Asar', style: TextStyle(color: Colors.white)),
         actions: const [],
@@ -86,14 +87,17 @@ class ComplaintsPage extends StatelessWidget {
                                 alignment: Alignment.centerLeft,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
+                                    backgroundColor: Color(0xff003366),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
                                   onPressed:
                                       () => controller.deleteComplaint(item.id),
-                                  child: const Text('حذف'),
+                                  child: const Text(
+                                    'حذف',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ],
@@ -110,13 +114,16 @@ class ComplaintsPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () => controller.deleteAll(),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xffA2C5F4),
+                  backgroundColor: const Color(0xff003366),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text('حذف الكل'),
+                child: const Text(
+                  'حذف الكل',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ],

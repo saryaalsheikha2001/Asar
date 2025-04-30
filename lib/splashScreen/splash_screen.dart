@@ -37,7 +37,7 @@ class SplashScreen extends StatelessWidget {
 
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                    child: SpinKitFoldingCube(color: Colors.black),
+                    child: SpinKitDoubleBounce(color: Color(0xff003366)),
                   ),
                 ],
               ),

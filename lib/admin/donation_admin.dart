@@ -37,17 +37,24 @@ class DonationsPage extends StatelessWidget {
                     color: Colors.white,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
-                        'الرصيد الكلي\n${controller.totalAmount}',
-                        textAlign: TextAlign.right,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 10,
+                          left: 10,
+                          top: 10,
+                          bottom: 10,
+                        ),
+                        child: Text(
+                          'الرصيد الكلي :        ${controller.totalAmount}',
+                          textAlign: TextAlign.right,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),

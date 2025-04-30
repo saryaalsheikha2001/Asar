@@ -62,10 +62,10 @@ class _AddHamlaState extends State<AddHamlaPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              Icon(Icons.add, color: Colors.white),
               SizedBox(width: 12),
               Text("إضافة حملة", style: TextStyle(color: Colors.white)),
             ],
@@ -92,7 +92,11 @@ class _AddHamlaState extends State<AddHamlaPage> {
                   'عدد المتطوعين المطلوب',
                   type: TextInputType.number,
                 ),
-                customTextField(dateController, 'تاريخ انطلاق الحملة'),
+                customTextField(
+                  dateController,
+                  'تاريخ انطلاق الحملة',
+                  type: TextInputType.datetime,
+                ),
                 customTextField(
                   pointsController,
                   'النقاط المعطاة بالحملة',
