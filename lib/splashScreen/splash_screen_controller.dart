@@ -6,7 +6,7 @@ class SplashScreenController extends GetxController {
   @override
   Future onInit() async {
     super.onInit();
-    await Future.delayed(Duration(seconds: 6));
+    await Future.delayed(Duration(seconds: 3));
     if (Get.find<StorageService>().getAccountType() ==
         StorageService.Volunteer_User_Account)
       Get.offAllNamed("/buttom_navigation_bar_voulnter");
