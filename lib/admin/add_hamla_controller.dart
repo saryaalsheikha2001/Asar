@@ -6,7 +6,7 @@ class Campaign {
   final String startDate;
   final int points;
   final String teamName;
-  final String? teamImagePath; 
+  final String? teamImagePath;
 
   Campaign({
     required this.name,
