@@ -22,7 +22,7 @@ class Homepageadmin extends StatelessWidget {
             backgroundColor: const Color(0xFFF5F6FA),
             appBar: AppBar(
               centerTitle: true,
-              backgroundColor: const Color(0xFF003366),
+              backgroundColor: const Color.fromRGBO(0, 51, 102, 1),
               title: const Text(
                 'آثر',
                 style: TextStyle(
@@ -34,7 +34,7 @@ class Homepageadmin extends StatelessWidget {
               ),
               bottom: const TabBar(
                 labelColor: Colors.white,
-                unselectedLabelColor: Colors.white70,
+                unselectedLabelColor: Colors.white60,
                 indicatorColor: Colors.amber,
                 tabs: [Tab(text: 'منتهية'), Tab(text: 'جارية')],
               ),
@@ -71,10 +71,15 @@ class Homepageadmin extends StatelessWidget {
                                 controller.addCampaign(result);
                               }
                             },
-                            icon: const Icon(Icons.add),
+                            icon: const Icon(Icons.add, color: Colors.white),
                             label: const Text('إنشاء حملة'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF003366),
+                              backgroundColor: const Color.fromRGBO(
+                                0,
+                                51,
+                                102,
+                                1,
+                              ),
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
                                 vertical: 12,
@@ -248,10 +253,10 @@ class Homepageadmin extends StatelessWidget {
                         arguments: {'campaignName': campaign['name']},
                       );
                     },
-                    icon: const Icon(Icons.chat),
+                    icon: const Icon(Icons.chat, color: Colors.white),
                     label: const Text("تواصل"),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.indigo[800],
+                      backgroundColor: Color.fromRGBO(0, 51, 102, 1),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                         vertical: 10,

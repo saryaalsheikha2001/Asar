@@ -83,16 +83,11 @@ import 'package:athar_project/admin/Complaints_hmla_Page.dart';
 //                   : controller.currentIndex == 3
 //                     ? DonationsPage()
 
-        
 //         );
 //       },
 //     );
 //   }
 // }
-
-
-
-
 
 import 'package:athar_project/admin/CampaignChatPage.dart';
 import 'package:athar_project/admin/Complaints_hmla_Page.dart';
@@ -104,7 +99,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ButtomNavigationBarPage extends GetView<ButtomNavigationBarPageController> {
+class ButtomNavigationBarPage
+    extends GetView<ButtomNavigationBarPageController> {
   const ButtomNavigationBarPage({Key? key}) : super(key: key);
 
   @override
@@ -132,13 +128,10 @@ class ButtomNavigationBarPage extends GetView<ButtomNavigationBarPageController>
                 label: 'الحملات',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'حسابي',
-              ),
-              BottomNavigationBarItem(
                 icon: Icon(Icons.monetization_on),
                 label: 'التبرعات',
               ),
+              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'حسابي'),
             ],
           ),
           body: _getBody(controller.currentIndex),
@@ -150,13 +143,17 @@ class ButtomNavigationBarPage extends GetView<ButtomNavigationBarPageController>
   Widget _getBody(int index) {
     switch (index) {
       case 0:
+        // return Homepageadmin();
         return ComplaintsPage();
       case 1:
+        // return ComplaintsPage();
         return Homepageadmin();
+
       case 2:
-        return ProfilePage();
-      case 3:
         return DonationsPage();
+      case 3:
+        // return DonationsPage();
+        return ProfilePage();
       default:
         return Center(child: Text('لا توجد بيانات'));
     }
