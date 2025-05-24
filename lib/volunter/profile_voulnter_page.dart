@@ -12,7 +12,10 @@ class ProfileVoulnter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('الحساب الشخصي'),
+        title: const Text(
+          'الحساب الشخصي',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: const Color(0xFF003366),
       ),
@@ -30,7 +33,9 @@ class ProfileVoulnter extends StatelessWidget {
                 backgroundImage:
                     controller.avatarPath.value.isNotEmpty
                         ? FileImage(File(controller.avatarPath.value))
-                        : const AssetImage('assets/default_avatar.png')
+                        : const AssetImage(
+                              'assets/images/photo_2025-04-16_14-38-02-removebg-preview.png',
+                            )
                             as ImageProvider,
               );
             }),
@@ -85,7 +90,7 @@ class ProfileVoulnter extends StatelessWidget {
             // زر التعديل
             ElevatedButton(
               onPressed: () {
-                Get.toNamed('/edit_profile_voulnter');
+                Get.toNamed('/detail_voulnter');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF003366),
