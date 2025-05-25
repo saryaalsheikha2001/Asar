@@ -1,4 +1,4 @@
-import 'package:athar_project/volunter/home_page_controller.dart';
+import 'package:athar_project/volunter/homepage/home_page_controller.dart';
 import 'package:get/get.dart';
 
 class JoinedCampaignController extends GetxController {

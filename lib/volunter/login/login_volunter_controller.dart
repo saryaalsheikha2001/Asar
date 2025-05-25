@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:athar_project/network.dart';
 import 'package:athar_project/volunter/core/model/login_volunteer_model.dart';
-import 'package:athar_project/volunter/volunteer_storage_service.dart';
+import 'package:athar_project/volunter/storage/volunteer_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;

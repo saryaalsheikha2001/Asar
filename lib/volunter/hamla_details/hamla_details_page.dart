@@ -1,7 +1,7 @@
-import 'package:athar_project/volunter/joined_with_hamla_controller.dart';
+import 'package:athar_project/volunter/join_with_hamla/joined_with_hamla_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../home_page_controller.dart';
+import '../homepage/home_page_controller.dart';
 
 class HamlaDetails extends StatelessWidget {
   final Hamla donation;

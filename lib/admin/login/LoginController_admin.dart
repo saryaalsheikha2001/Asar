@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:athar_project/admin/core/model/login_admin_model.dart';
 import 'package:athar_project/network.dart';
-import 'package:athar_project/volunter/volunteer_storage_service.dart';
+import 'package:athar_project/volunter/storage/volunteer_storage_service.dart';
 import 'package:email_validator_flutter/email_validator_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

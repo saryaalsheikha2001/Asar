@@ -1,7 +1,7 @@
-import 'package:athar_project/volunter/joined_with_hamla_controller.dart';
+import 'package:athar_project/volunter/join_with_hamla/joined_with_hamla_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../volunter/home_page_controller.dart'; // أو وين عندك كلاس Hamla
+import '../homepage/home_page_controller.dart'; // أو وين عندك كلاس Hamla
 
 class JoinedCampaignPage extends StatelessWidget {
   // final JoinedCampaignController joinedCampaignController = Get.put(

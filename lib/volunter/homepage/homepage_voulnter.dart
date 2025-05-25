@@ -1,5 +1,5 @@
 import 'package:athar_project/volunter/hamla_details/hamla_details_page.dart';
-import 'package:athar_project/volunter/home_page_controller.dart';
+import 'package:athar_project/volunter/homepage/home_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' as intl;
@@ -15,7 +15,7 @@ class homepage_voulnter extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Color.fromRGBO(0, 51, 102, 1),
-          title: Text('Asar', style: TextStyle(color: Colors.white)),
+          title: Text('آثر', style: TextStyle(color: Colors.white)),
           actions: [
             IconButton(
               icon: Icon(Icons.search, color: Colors.white),

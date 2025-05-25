@@ -1,4 +1,4 @@
-import 'package:athar_project/volunter/shakawa_controller.dart';
+import 'package:athar_project/volunter/shakawa/shakawa_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
