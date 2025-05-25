@@ -14,7 +14,7 @@ import 'package:athar_project/volunter/edit_profile_voulnter.dart';
 import 'package:athar_project/volunter/homepage_voulnter.dart';
 import 'package:athar_project/volunter/joined_with_hamla_controller.dart';
 import 'package:athar_project/volunter/login/login_voulnter.dart';
-import 'package:athar_project/volunter/profile_voulnter_page.dart';
+import 'package:athar_project/volunter/details_about_voulnter/profile_voulnter_page.dart';
 import 'package:athar_project/volunter/shakawa.dart';
 import 'package:athar_project/volunter/sinup/sinup_voulnter.dart';
 import 'package:athar_project/volunter/tabroat.dart';

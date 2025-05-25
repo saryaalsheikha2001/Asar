@@ -10,7 +10,11 @@ class detail_voulnter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Asar'),
+        centerTitle: true,
+        title: const Text(
+          'تعديل المعلومات',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color(0xFF003366),
       ),
       body: SingleChildScrollView(
