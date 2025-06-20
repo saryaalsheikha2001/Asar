@@ -1,4 +1,4 @@
-import 'package:athar_project/admin/CampaignChatPage.dart';
+import 'package:athar_project/admin/chat_Admin/CampaignChatPage.dart';
 import 'package:athar_project/admin/Complaints_hmla_Page.dart';
 // import 'package:athar_project/admin/buttom_navigation_bar/buttom_navigation_bar_page_controller.dart';
 // import 'package:athar_project/admin/profile_for_admin/edit_profile_admin.dart';
@@ -89,9 +89,10 @@ import 'package:athar_project/admin/Complaints_hmla_Page.dart';
 //   }
 // }
 
-import 'package:athar_project/admin/CampaignChatPage.dart';
+import 'package:athar_project/admin/chat_Admin/CampaignChatPage.dart';
 import 'package:athar_project/admin/Complaints_hmla_Page.dart';
 import 'package:athar_project/admin/buttom_navigation_bar/buttom_navigation_bar_page_controller.dart';
+import 'package:athar_project/admin/profile_for_admin/admin_profile.dart';
 import 'package:athar_project/admin/profile_for_admin/edit_profile_admin.dart';
 import 'package:athar_project/admin/homepageadmin.dart';
 import 'package:athar_project/admin/donation_admin.dart';
@@ -153,7 +154,7 @@ class ButtomNavigationBarPage
         return DonationsPage();
       case 3:
         // return DonationsPage();
-        return ProfilePage();
+        return AdminProfilePage();
       default:
         return Center(child: Text('لا توجد بيانات'));
     }

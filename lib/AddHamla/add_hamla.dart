@@ -99,8 +99,13 @@ class _AddHamlaState extends State<AddHamlaPage> {
                 ),
                 customTextField(
                   pointsController,
-                  'النقاط المعطاة بالحملة',
+                  'عدد النقاط المعطاة بالحملة',
                   type: TextInputType.number,
+                ),
+                customTextField(
+                  pointsController,
+                  'نوع الحملة ',
+                  type: TextInputType.text,
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(

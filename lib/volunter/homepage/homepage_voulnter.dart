@@ -32,12 +32,12 @@ class homepage_voulnter extends StatelessWidget {
                 ? Center(child: CircularProgressIndicator())
                 : ListView.builder(
                   padding: EdgeInsets.all(12),
-                  itemCount: controller.campaignsModel.data!.length,
+                  itemCount: controller.campaignsModel.data?.length ?? 0,
                   itemBuilder: (context, index) {
                     final donation = controller.campaignsModel.data![index];
                     return InkWell(
                       onTap: () {
-                        // Get.to(() => HamlaDetails(donation: donation));
+                        Get.to(() => HamlaDetails(id: donation.id!));
                       },
                       child: Card(
                         margin: EdgeInsets.symmetric(vertical: 8),

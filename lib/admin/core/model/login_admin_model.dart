@@ -62,7 +62,7 @@ class Employee {
     this.teamId,
     this.specializationId,
     this.createdAt,
-    this.updatedAt,
+    this.updatedAt, int? team, int? specialization,
   });
 
   factory Employee.fromJson(Map<String, dynamic> json) => Employee(

@@ -1,9 +1,11 @@
-import 'package:athar_project/admin/home_page_controller.dart';
+import 'package:athar_project/admin/model/CompagineAdmin_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'home_page_controller.dart';
+
 class CampaignDetailsPage extends StatelessWidget {
-  final Map<String, String> campaign;
+  final Datum campaign;
 
   const CampaignDetailsPage({super.key, required this.campaign});
 
@@ -14,108 +16,102 @@ class CampaignDetailsPage extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            campaign['name'] ?? 'تفاصيل الحملة',
+            campaign.campaignName ?? 'تفاصيل الحملة',
             style: const TextStyle(color: Colors.white),
           ),
           backgroundColor: const Color.fromRGBO(0, 51, 102, 1),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_rounded),
-            onPressed: () {
-              Get.back();
-            },
+            icon: const Icon(Icons.arrow_back_rounded),
+            onPressed: () => Get.back(),
             color: Colors.white,
           ),
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (campaign.team?.logo != null)
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    campaign['image']!,
+                  child: Image.network(
+                    'http://volunteer.test-holooltech.com/${campaign.team!.logo!}',
                     width: double.infinity,
                     height: 250,
                     fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(height: 24),
-
-                // تفاصيل الحملة داخل بطاقات أنيقة
-                _buildInfoCard(
-                  icon: Icons.category,
-                  label: 'نوع الحملة',
-                  value: campaign['type']!,
-                ),
-                _buildInfoCard(
-                  icon: Icons.people,
-                  label: 'عدد المشاركين',
-                  value: campaign['participants']!,
-                ),
-                _buildInfoCard(
-                  icon: Icons.attach_money,
-                  label: 'المبلغ',
-                  value: campaign['amount']!,
-                ),
-                _buildInfoCard(
-                  icon: Icons.calendar_today,
-                  label: 'التاريخ',
-                  value: campaign['date']!,
-                ),
-
-                const SizedBox(height: 20),
-                Center(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      // زر تنفيذ - يمكن توجيهه لتعديل أو مشاركة الحملة
-                    },
-                    icon: const Icon(Icons.edit, color: Colors.white),
-                    label: const Text(
-                      'تعديل الحملة',
-                      style: TextStyle(color: Colors.white),
+              const SizedBox(height: 24),
+              _buildInfoCard(
+                icon: Icons.category,
+                label: 'نوع الحملة',
+                value: campaign.campaignType?.name.toString() ?? 'غير محدد',
+              ),
+              _buildInfoCard(
+                icon: Icons.people,
+                label: 'عدد المتطوعين',
+                value: campaign.numberOfVolunteer?.toString() ?? 'غير معروف',
+              ),
+              _buildInfoCard(
+                icon: Icons.attach_money,
+                label: 'المبلغ',
+                value: '${campaign.cost ?? '0'} \$',
+              ),
+              _buildInfoCard(
+                icon: Icons.calendar_today,
+                label: 'التاريخ',
+                value: campaign.from.toString() ?? '',
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    // تعديل الحملة
+                  },
+                  icon: const Icon(Icons.edit, color: Colors.white),
+                  label: const Text(
+                    'تعديل الحملة',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(0, 51, 102, 1),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromRGBO(0, 51, 102, 1),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                Center(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      // إنهاء الحملة
-                      Get.find<HomePageController>().finishCampaign(campaign);
-                      Get.back(); // العودة إلى الصفحة الرئيسية بعد التحديث
-                    },
-                    icon: const Icon(Icons.check, color: Colors.white),
-                    label: const Text(
-                      'إنهاء الحملة',
-                      style: TextStyle(color: Colors.white),
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Get.find<HomePageController>().finishCampaign(
+                      campaign as Map<String, String>,
+                    );
+                    Get.back();
+                  },
+                  icon: const Icon(Icons.check, color: Colors.white),
+                  label: const Text(
+                    'إنهاء الحملة',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(0, 51, 102, 1),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromRGBO(0, 51, 102, 1),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

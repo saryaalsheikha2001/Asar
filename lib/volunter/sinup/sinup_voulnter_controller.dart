@@ -5,6 +5,7 @@ import 'package:athar_project/network.dart';
 import 'package:athar_project/volunter/core/model/login_volunteer_model.dart';
 import 'package:athar_project/volunter/core/model/specializations_model.dart';
 import 'package:athar_project/volunter/details_about_voulnter/details_voulnter.dart';
+import 'package:athar_project/volunter/sinup/voulnter_from.dart';
 import 'package:athar_project/volunter/storage/volunteer_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ class sinup_voulnter_controller extends GetxController {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  Map<String, dynamic>? initialVolunteerData;
 
   var isPasswordHidden = true;
 
@@ -60,12 +62,12 @@ class sinup_voulnter_controller extends GetxController {
         final http.Response response = await NetworkUtils.post(
           url: "volunteer/register",
           headers: NetworkUtils.headers,
-          body: {
+          body: jsonEncode({
             "full_name": nameController.text,
             "email": emailController.text,
             "password": passwordController.text,
             "specialization_id": selectedSpecialization!.id.toString(),
-          },
+          }),
         );
 
         log(response.body.toString(), name: "register response body");
@@ -76,7 +78,7 @@ class sinup_voulnter_controller extends GetxController {
             LoginVolunteerModel.fromJson(json.decode(response.body)),
           );
           storage.setLoginAccountType(false);
-          Get.offAllNamed('/homepage_voulnter');
+          Get.to(VolunteerFormScreen());
         } else {
           Get.snackbar(
             "فشل",

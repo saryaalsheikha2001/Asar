@@ -1,5 +1,6 @@
 import 'package:athar_project/volunter/core/model/specializations_model.dart';
 import 'package:athar_project/volunter/sinup/sinup_voulnter_controller.dart';
+import 'package:athar_project/volunter/sinup/voulnter_from.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -153,8 +154,11 @@ class sinup_voulnter extends StatelessWidget {
                                   vertical: 15,
                                 ),
                               ),
-                              onPressed:
-                                  () async => await controller.register(),
+                              onPressed: () async {
+                                await controller.register();
+                              },
+
+                              // () async => await controller.register(),
                               child: const Text(
                                 "إنشاء الحساب",
                                 style: TextStyle(color: Colors.white),

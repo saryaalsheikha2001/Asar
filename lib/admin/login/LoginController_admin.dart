@@ -38,6 +38,7 @@ class LoginController extends GetxController {
       var storage = Get.find<StorageService>();
       final http.Response response = await NetworkUtils.post(
         url: "employee/login",
+
         headers: NetworkUtils.headers,
         body: json.encode({
           "email": emailTextEditingController.text,

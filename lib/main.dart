@@ -1,8 +1,9 @@
-import 'package:athar_project/admin/CampaignChatPage.dart';
+import 'package:athar_project/admin/chat_Admin/CampaignChatPage.dart';
 import 'package:athar_project/admin/ComplaintDetailsPage.dart';
 import 'package:athar_project/admin/login/Login_admin.dart';
-import 'package:athar_project/admin/add_hamla.dart';
+import 'package:athar_project/AddHamla/add_hamla.dart';
 import 'package:athar_project/admin/buttom_navigation_bar/buttom_navigation_bar_page.dart';
+import 'package:athar_project/admin/profile_for_admin/admin_profile.dart';
 import 'package:athar_project/admin/profile_for_admin/edit_profile_admin.dart';
 import 'package:athar_project/admin/homepageadmin.dart';
 import 'package:athar_project/homepage/HomePage.dart';
@@ -28,10 +29,10 @@ import 'package:athar_project/admin/home_page_controller.dart';
 void main() async {
   await GetStorage.init();
 
+  Get.put(StorageService());
   Get.put(HomePageController());
   Get.put(JoinedCampaignController());
-  Get.put(detail_voulnter_controller());
-  Get.put(StorageService());
+  Get.put(DetailVoulnterController());
 
   runApp(const MyApp());
 }
@@ -57,7 +58,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: "/homepage", page: () => const HomePage()),
         GetPage(name: "/Login_admin", page: () => Login_admin()),
         GetPage(name: "/Homepageadmin", page: () => const Homepageadmin()),
-        GetPage(name: '/profile', page: () => ProfilePage()),
+        GetPage(name: "/AdminProfilePage", page: () => AdminProfilePage()),
+
+        GetPage(name: '/profile', page: () => EditAdminProfilePage()),
         GetPage(name: '/add_hamla', page: () => AddHamlaPage()),
         GetPage(
           name: '/complaint-details',
