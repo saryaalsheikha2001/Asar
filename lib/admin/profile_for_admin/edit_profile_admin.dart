@@ -1,5 +1,4 @@
-import 'dart:io';
-import 'package:athar_project/admin/profile_for_admin/edit_profile_controller.dart';
+import 'package:athar_project/admin/profile_for_admin/%D9%90Admin_profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +17,8 @@ class EditAdminProfilePage extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(0, 51, 102, 1),
       ),
       body: GetBuilder<AdminProfileController>(
-        builder: (_) {
+        init: AdminProfileController(),
+        builder: (controller) {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -45,7 +45,8 @@ class EditAdminProfilePage extends StatelessWidget {
                         position: controller.positionController.text,
                         phone: controller.phoneController.text,
                         address: controller.addressController.text,
-                        dateAccession: '',
+                        dateAccession:
+                            controller.profileAdminModel.data!.dateAccession!,
                       );
                     }
                   },
@@ -68,11 +69,11 @@ class EditAdminProfilePage extends StatelessWidget {
         CircleAvatar(
           radius: 55,
           backgroundImage:
-              controller.pickedImage.value != null
-                  ? FileImage(controller.pickedImage.value!)
-                  : (controller.profile.value?.image != null &&
-                      controller.profile.value!.image!.isNotEmpty)
-                  ? NetworkImage(controller.profile.value!.image!)
+              controller.pickedImage != null
+                  ? FileImage(controller.pickedImage)
+                  : (controller.profile.image != null &&
+                      controller.profile.image!.isNotEmpty)
+                  ? NetworkImage(controller.profile.image!)
                   : const AssetImage(
                         "assets/images/photo_2025-04-16_14-38-02-removebg-preview.png",
                       )

@@ -23,6 +23,22 @@ class CampaignDetailsModel {
   Map<String, dynamic> toJson() => {"data": data!.toJson()};
 }
 
+
+class Hamla {
+  final int id;
+  final String teamName;
+  final String? image;
+  final String time;
+
+  Hamla({
+    required this.id,
+    required this.teamName,
+    this.image,
+    required this.time,
+  });
+}
+
+
 class Data {
   int? id;
   String? campaignName;

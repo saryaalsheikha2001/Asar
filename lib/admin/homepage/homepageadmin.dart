@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:athar_project/admin/chat_Admin/CampaignChatPage.dart';
 import 'package:athar_project/admin/details_about_hamla.dart';
-import 'package:athar_project/admin/home_page_controller.dart';
+import 'package:athar_project/admin/homepage/home_page_controller.dart';
 import 'package:athar_project/admin/model/CompagineAdmin_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 
 class Homepageadmin extends StatelessWidget {
   const Homepageadmin({Key? key}) : super(key: key);
@@ -22,6 +23,21 @@ class Homepageadmin extends StatelessWidget {
           child: Scaffold(
             backgroundColor: const Color(0xFFF5F6FA),
             appBar: AppBar(
+              actions: [
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed("/NotificationsPage");
+                      },
+                      icon: Icon(
+                        Icons.notifications_active_rounded,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
               centerTitle: true,
               backgroundColor: const Color.fromRGBO(0, 51, 102, 1),
               title: const Text(
@@ -50,6 +66,7 @@ class Homepageadmin extends StatelessWidget {
                         //////////////////////////////////////// حملات منتهية //////////////////////////////////////
                         ListView.builder(
                           padding: const EdgeInsets.symmetric(vertical: 10),
+                          shrinkWrap: true,
                           itemCount: controller.campaignsDoneModel.data?.length,
                           itemBuilder: (context, index) {
                             var campaign =
@@ -142,18 +159,26 @@ class Homepageadmin extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              itemCount:
-                                  controller.campaignsPendingModel.data?.length,
-                              itemBuilder: (context, index) {
-                                var campaign =
+                            Expanded(
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                // physics: NeverScrollableScrollPhysics(),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                ),
+                                itemCount:
                                     controller
                                         .campaignsPendingModel
-                                        .data?[index];
-                                return _buildCampaignCard(campaign!);
-                              },
+                                        .data
+                                        ?.length,
+                                itemBuilder: (context, index) {
+                                  var campaign =
+                                      controller
+                                          .campaignsPendingModel
+                                          .data?[index];
+                                  return _buildCampaignCard(campaign!);
+                                },
+                              ),
                             ),
                             // Expanded(
                             //   child: Obx(() {
@@ -227,6 +252,13 @@ class Homepageadmin extends StatelessWidget {
                       width: 60,
                       height: 60,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/images/photo_2025-04-16_14-38-02-removebg-preview.png',
+                          width: 60,
+                          height: 60,
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: 12),

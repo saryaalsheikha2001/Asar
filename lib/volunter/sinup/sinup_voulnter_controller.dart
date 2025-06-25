@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:athar_project/network.dart';
 import 'package:athar_project/volunter/core/model/login_volunteer_model.dart';
 import 'package:athar_project/volunter/core/model/specializations_model.dart';
-import 'package:athar_project/volunter/details_about_voulnter/details_voulnter.dart';
+import 'package:athar_project/volunter/details_about_voulnter/update_details_voulnter.dart';
 import 'package:athar_project/volunter/sinup/voulnter_from.dart';
 import 'package:athar_project/volunter/storage/volunteer_storage_service.dart';
 import 'package:flutter/material.dart';

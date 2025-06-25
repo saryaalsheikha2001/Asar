@@ -3,6 +3,9 @@ import 'dart:developer';
 
 import 'package:athar_project/network.dart';
 import 'package:athar_project/volunter/core/model/login_volunteer_model.dart';
+import 'package:athar_project/volunter/details_about_voulnter/detail_voulnter_controller.dart';
+import 'package:athar_project/volunter/homepage/home_page_controller.dart';
+import 'package:athar_project/volunter/join_with_hamla/joined_with_hamla_controller.dart';
 import 'package:athar_project/volunter/storage/volunteer_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -46,6 +49,9 @@ class login_volunter_controller extends GetxController {
             LoginVolunteerModel.fromJson(json.decode(response.body)),
           );
           storage.setLoginAccountType(false);
+          Get.put(HamlaController()).onInit();
+          Get.put(JoinedCampaignController()).onInit();
+          Get.put(DetailVoulnterController()).onInit();
           Get.offAllNamed('/homepage_voulnter');
         } else {
           Get.snackbar(

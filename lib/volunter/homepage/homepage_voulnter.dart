@@ -63,7 +63,7 @@ class homepage_voulnter extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      donation.team!.teamName!,
+                                      donation.campaignName!,
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,

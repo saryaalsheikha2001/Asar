@@ -1,13 +1,10 @@
+import 'package:athar_project/volunter/hamla_details/hamla_details_page.dart';
 import 'package:athar_project/volunter/join_with_hamla/joined_with_hamla_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../homepage/home_page_controller.dart'; // أو وين عندك كلاس Hamla
+import '../homepage/home_page_controller.dart';
 
 class JoinedCampaignPage extends StatelessWidget {
-  // final JoinedCampaignController joinedCampaignController = Get.put(
-  //   JoinedCampaignController(),
-  // );
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,7 +23,6 @@ class JoinedCampaignPage extends StatelessWidget {
             return controller.joinedCampaigns.isEmpty
                 ? Center(child: Text('لا يوجد حملات مشترك فيها بعد.'))
                 : ListView.builder(
-                  padding: const EdgeInsets.all(16),
                   itemCount: controller.joinedCampaigns.length,
                   itemBuilder: (context, index) {
                     final campaign = controller.joinedCampaigns[index];
@@ -35,14 +31,29 @@ class JoinedCampaignPage extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: 12),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundImage: AssetImage(campaign.image!),
+                          backgroundImage:
+                              campaign.team!.logo != null
+                                  ? NetworkImage(campaign.team!.logo!)
+                                  : AssetImage('assets/default_image.png')
+                                      as ImageProvider,
                         ),
-                        title: Text(campaign.teamName!),
-                        subtitle: Text('${campaign.time} - دمشق'),
+                        title: Text(campaign.campaignName ?? ''),
+                        subtitle: Text(campaign.team!.teamName ?? ''),
+                        onTap: () {
+                          if (campaign.id != null) {
+                            Get.to(
+                              () => HamlaDetails(
+                                id: campaign.id!,
+                                showChatButton: true,
+                              ),
+                            );
+                          }
+                        },
                       ),
                     );
                   },
                 );
+            ;
           },
         ),
       ),

@@ -25,8 +25,10 @@ class Hamla {
     this.equipment,
     this.time,
     this.description, // <-- جديد
-    this.phoneNumber, // <-- جديد
+    this.phoneNumber, required int id, // <-- جديد
   });
+
+  get id => null;
 }
 
 class HamlaController extends GetxController {

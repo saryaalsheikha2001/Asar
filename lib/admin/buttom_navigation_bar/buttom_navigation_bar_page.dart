@@ -1,5 +1,9 @@
+import 'package:athar_project/admin/Attendance/Attendance.dart';
+import 'package:athar_project/admin/Attendance/attedance_list.dart';
+import 'package:athar_project/admin/Attendance/attendance_controller.dart';
+import 'package:athar_project/admin/Volunteer_Attendance/Volunteer_Attendance.dart';
 import 'package:athar_project/admin/chat_Admin/CampaignChatPage.dart';
-import 'package:athar_project/admin/Complaints_hmla_Page.dart';
+import 'package:athar_project/admin/camplaints/Complaints_hmla_Page.dart';
 // import 'package:athar_project/admin/buttom_navigation_bar/buttom_navigation_bar_page_controller.dart';
 // import 'package:athar_project/admin/profile_for_admin/edit_profile_admin.dart';
 // import 'package:athar_project/admin/homepageadmin.dart';
@@ -90,11 +94,11 @@ import 'package:athar_project/admin/Complaints_hmla_Page.dart';
 // }
 
 import 'package:athar_project/admin/chat_Admin/CampaignChatPage.dart';
-import 'package:athar_project/admin/Complaints_hmla_Page.dart';
+import 'package:athar_project/admin/camplaints/Complaints_hmla_Page.dart';
 import 'package:athar_project/admin/buttom_navigation_bar/buttom_navigation_bar_page_controller.dart';
 import 'package:athar_project/admin/profile_for_admin/admin_profile.dart';
 import 'package:athar_project/admin/profile_for_admin/edit_profile_admin.dart';
-import 'package:athar_project/admin/homepageadmin.dart';
+import 'package:athar_project/admin/homepage/homepageadmin.dart';
 import 'package:athar_project/admin/donation_admin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -132,6 +136,10 @@ class ButtomNavigationBarPage
                 icon: Icon(Icons.monetization_on),
                 label: 'التبرعات',
               ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person_pin_circle_outlined),
+                label: 'الحضور ',
+              ),
               BottomNavigationBarItem(icon: Icon(Icons.person), label: 'حسابي'),
             ],
           ),
@@ -152,9 +160,14 @@ class ButtomNavigationBarPage
 
       case 2:
         return DonationsPage();
-      case 3:
+      case 4:
         // return DonationsPage();
         return AdminProfilePage();
+
+      case 3:
+        final attendanceController = Get.put(AttendanceController());
+        return AttendancesListPage(controller: attendanceController);
+
       default:
         return Center(child: Text('لا توجد بيانات'));
     }

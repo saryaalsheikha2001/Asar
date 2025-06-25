@@ -36,7 +36,7 @@ class HamlaDetailsController extends GetxController {
         headers: authHeaders,
       );
       log(response.body.toString(), name: "getCampaignDetails response body");
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode==201) {
         var data = json.decode(response.body);
         campaignDetailsModel = CampaignDetailsModel.fromJson(data);
         return CampaignDetailsModel.fromJson(data);

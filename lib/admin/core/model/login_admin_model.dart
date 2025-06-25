@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 LoginAdminModel loginAdminModelFromJson(String str) =>
     LoginAdminModel.fromJson(json.decode(str));
 
@@ -62,7 +64,9 @@ class Employee {
     this.teamId,
     this.specializationId,
     this.createdAt,
-    this.updatedAt, int? team, int? specialization,
+    this.updatedAt,
+    int? team,
+    int? specialization,
   });
 
   factory Employee.fromJson(Map<String, dynamic> json) => Employee(
@@ -94,7 +98,7 @@ class Employee {
     "position": position,
     "phone": phone,
     "address": address,
-    "date_accession": dateAccession?.toIso8601String(),
+    "date_accession": DateFormat('yyyy-MM-dd').format(dateAccession!),
     "image": image,
     "team_id": teamId,
     "specialization_id": specializationId,

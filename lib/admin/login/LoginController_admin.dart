@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:athar_project/admin/core/model/login_admin_model.dart';
+import 'package:athar_project/admin/homepage/home_page_controller.dart';
 import 'package:athar_project/network.dart';
 import 'package:athar_project/volunter/storage/volunteer_storage_service.dart';
 import 'package:email_validator_flutter/email_validator_flutter.dart';
@@ -13,7 +14,7 @@ import 'package:http/http.dart' as http;
 class LoginController extends GetxController {
   var selectedTeam = '';
   final passwordController = TextEditingController();
-  var obscurePassword = true;
+  var obscurePassword = false;
   TextEditingController emailTextEditingController = TextEditingController();
 
   bool isLoading = false;
@@ -52,6 +53,9 @@ class LoginController extends GetxController {
           LoginAdminModel.fromJson(json.decode(response.body)),
         );
         storage.setLoginAccountType(true);
+        Get.put(HomePageController()).onInit();
+        // Get.put(JoinedCampaignController());
+        // Get.put(DetailVoulnterController());
         Get.offAllNamed('/buttom/navigation/bar/page');
       } else {
         Get.snackbar(

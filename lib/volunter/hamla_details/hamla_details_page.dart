@@ -1,13 +1,22 @@
-import 'package:athar_project/volunter/hamla_details/hamla_details_controller.dart';
-import 'package:athar_project/volunter/join_with_hamla/joined_with_hamla_controller.dart';
+// hamla_details.dart
+import 'dart:developer';
+
+import 'package:athar_project/volunter/chat_voulnter/chat_rom_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:athar_project/volunter/hamla_details/hamla_details_controller.dart';
+import 'package:athar_project/volunter/join_with_hamla/joined_with_hamla_controller.dart';
+import 'package:athar_project/volunter/chat_voulnter/chat_room_page.dart';
+import 'package:athar_project/volunter/storage/volunteer_storage_service.dart';
 import '../homepage/home_page_controller.dart';
 
 class HamlaDetails extends StatelessWidget {
   final int id;
+  final bool showChatButton;
 
-  const HamlaDetails({required this.id, Key? key}) : super(key: key);
+  const HamlaDetails({required this.id, this.showChatButton = false, Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,127 +24,223 @@ class HamlaDetails extends StatelessWidget {
       init: HamlaDetailsController(id),
       builder: (controller) {
         return controller.isLoading
-            ? Material(child: Center(child: CircularProgressIndicator()))
+            ? const Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(child: CircularProgressIndicator()),
+            )
             : Scaffold(
               appBar: AppBar(
                 title: Text(
                   controller.campaignDetailsModel.data?.team?.teamName ?? '',
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
-                backgroundColor: Color.fromRGBO(0, 51, 102, 1),
+                backgroundColor: const Color(0xFF003366),
+                centerTitle: true,
               ),
-              body: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView(
+              body: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                      radius: 100,
-                      backgroundImage: NetworkImage(
-                        "http://volunteer.test-holooltech.com/" +
-                            "${controller.campaignDetailsModel.data?.team?.logo ?? ''}",
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    InfoTile(
-                      title: 'اسم الحملة',
-                      value:
-                          controller.campaignDetailsModel.data?.team?.teamName,
-                    ),
-                    InfoTile(
-                      title: 'مدير الحملة',
-                      value:
-                          controller
-                              .campaignDetailsModel
-                              .data
-                              ?.employee
-                              ?.fullName,
-                    ),
-                    InfoTile(
-                      title: 'رقم التواصل مع المشرف',
-                      value:
-                          controller.campaignDetailsModel.data?.employee?.phone,
-                    ),
-                    // InfoTile(
-                    //   title: 'عدد الأعضاء',
-                    //   value: '${donation.membersCount}',
-                    // ),
-                    InfoTile(
-                      title: 'الموقع',
-                      value: controller.campaignDetailsModel.data?.address,
-                    ),
-                    // InfoTile(
-                    //   title: 'المعدات اللازمة',
-                    //   value: donation.equipment,
-                    // ),
-                    InfoTile(
-                      title: 'وقت الحملة',
-                      value:
-                          controller.campaignDetailsModel.data?.team?.createdAt
-                              .toString(),
-                    ),
-                    InfoTile(
-                      title: 'رقم التواصل',
-                      value: controller.campaignDetailsModel.data?.team?.phone,
-                    ),
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      // child: Text(
-                      //   'وصف الحملة:\n${donation.description ?? ''}',
-                      //   textAlign: TextAlign.right,
-                      //   style: TextStyle(fontSize: 16),
-                      // ),
-                    ),
-                    SizedBox(height: 20),
-
-                    // زر الانضمام
-                    ElevatedButton(
-                      onPressed: () async {
-                        final joinedCampaignController =
-                            Get.find<JoinedCampaignController>();
-
-                        if (joinedCampaignController
-                            .joinedCampaigns
-                            .isNotEmpty) {
-                          Get.snackbar(
-                            'خطأ',
-                            'أنت مشترك بحملة بالفعل، انتظر انتهاء الحملة الحالية.',
-                            snackPosition: SnackPosition.BOTTOM,
-                          );
-                          return;
-                        }
-
-                        // await joinedCampaignController.joinCampaign(donation);
-                        Get.snackbar(
-                          'نجاح',
-                          'تم الاشتراك في الحملة بنجاح!',
-                          snackPosition: SnackPosition.TOP,
-                        );
-                        Get.snackbar(
-                          'نجاح',
-                          'تم الاشتراك في الحملة بنجاح!',
-                          snackPosition: SnackPosition.TOP,
-                        );
-                        Get.back();
-                      },
-                      child: Text('اشترك بالحملة'),
-                    ),
-
-                    SizedBox(height: 16),
-
-                    // زر المحادثة (غير مفعل)
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        // ممكن مستقبلا تفعّل المحادثة هنا
-                      },
-                      icon: Icon(Icons.chat),
-                      label: Text(
-                        'محادثة',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey,
+                      height: 180,
+                      width: 180,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: const Color(0xFF003366),
+                          width: 3,
+                        ),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            "http://volunteer.test-holooltech.com/" +
+                                (controller
+                                        .campaignDetailsModel
+                                        .data
+                                        ?.team
+                                        ?.logo ??
+                                    ''),
+                          ),
+                        ),
                       ),
                     ),
+                    const SizedBox(height: 24),
+                    buildInfoCard(
+                      'اسم الحملة',
+                      controller.campaignDetailsModel.data?.team?.teamName,
+                    ),
+                    buildInfoCard(
+                      'مدير الحملة',
+                      controller.campaignDetailsModel.data?.employee?.fullName,
+                    ),
+                    buildInfoCard(
+                      'رقم المشرف',
+                      controller.campaignDetailsModel.data?.employee?.phone,
+                    ),
+                    buildInfoCard(
+                      'الموقع',
+                      controller.campaignDetailsModel.data?.address,
+                    ),
+                    buildInfoCard(
+                      'وقت الحملة',
+                      controller.campaignDetailsModel.data?.from
+                          ?.toIso8601String(),
+                    ),
+                    buildInfoCard(
+                      'رقم التواصل',
+                      controller.campaignDetailsModel.data?.team?.phone,
+                    ),
+                    const SizedBox(height: 30),
+                    // زر الاشتراك
+                    if (!showChatButton)
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            final joinedController = Get.put(
+                              JoinedCampaignController(),
+                            );
+                            final data = controller.campaignDetailsModel.data;
+                            // if (data == null || data.team == null) {
+                            //   Get.snackbar(
+                            //     'خطأ',
+                            //     'بيانات الحملة غير مكتملة.',
+                            //     backgroundColor: Colors.red.shade100,
+                            //   );
+                            //   return;
+                            // }
+                            // if (joinedController.joinedCampaigns.isNotEmpty) {
+                            //   Get.snackbar(
+                            //     'خطأ',
+                            //     'أنت مشترك بحملة بالفعل.',
+                            //     backgroundColor: Colors.red.shade100,
+                            //   );
+                            //   return;
+                            // }
+                            if (joinedController.joinedCampaigns.isEmpty) {
+                              joinedController.joinCampaign(data!);
+                              Get.snackbar(
+                                'تم الاشتراك',
+                                'تم الاشتراك بالحملة بنجاح!',
+                                backgroundColor: Colors.green.shade100,
+                              );
+                            } else {
+                              Get.snackbar(
+                                'خطأ',
+                                'أنت مشترك بحملة بالفعل.',
+                                backgroundColor: Colors.red.shade100,
+                              );
+                            }
+
+                            // try {
+                            //   final token =
+                            //       Get.find<StorageService>()
+                            //           .getVolunteerTokenInfo()
+                            //           .token ??
+                            //       '';
+                            //   final url =
+                            //       'http://volunteer.test-holooltech.com/api/campaigns/${data.id}/volunteers';
+                            //   final response = await http.post(
+                            //     Uri.parse(url),
+                            //     headers: {
+                            //       'Accept': 'application/json',
+                            //       'Content-Type': 'application/json',
+                            //       'Authorization': 'Bearer $token',
+                            //     },
+                            //   );
+
+                            //   log(
+                            //     response.statusCode.toString(),
+                            //     name: "response.statusCode",
+                            //   );
+                            //   log(
+                            //     response.body.toString(),
+                            //     name: "response.body",
+                            //   );
+
+                            //   if (response.statusCode == 200) {
+                            //     final hamla = Hamla(
+                            //       id: data.id ?? 0,
+                            //       teamName: data.team?.teamName ?? '',
+                            //       image:
+                            //           "http://volunteer.test-holooltech.com/${data.team?.logo ?? ''}",
+                            //       time: data.from?.toIso8601String() ?? '',
+                            //     );
+                            //     await joinedController.joinCampaign(hamla);
+                            //     Get.snackbar(
+                            //       'تم الاشتراك',
+                            //       'تم الاشتراك بالحملة بنجاح!',
+                            //       backgroundColor: Colors.green.shade100,
+                            //     );
+                            //     Get.back();
+                            //   } else {
+                            //     Get.snackbar(
+                            //       'خطأ',
+                            //       'فشل الاشتراك بالحملة.',
+                            //       backgroundColor: Colors.red.shade100,
+                            //     );
+                            //   }
+                            // } catch (e) {
+                            //   Get.snackbar(
+                            //     'خطأ',
+                            //     'حدث خطأ أثناء الاتصال بالسيرفر.',
+                            //     backgroundColor: Colors.red.shade100,
+                            //   );
+                            // }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF003366),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'اشترك بالحملة',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 16),
+                    // زر المحادثة
+                    if (showChatButton)
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            // اذهب إلى صفحة المحادثة مع اسم الحملة
+                            final chatName =
+                                controller
+                                    .campaignDetailsModel
+                                    .data
+                                    ?.team
+                                    ?.teamName ??
+                                'محادثة';
+                            Get.to(
+                              () => ChatRoomsPage(
+                                // chatName: chatName,
+                                // roomId:
+                                //     controller.campaignDetailsModel.data!.id!,
+                                // chatRoomId:
+                                //     controller.campaignDetailsModel.data!.id!,
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.chat, color: Colors.white),
+                          label: const Text(
+                            "المحادثة",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF003366),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -143,22 +248,28 @@ class HamlaDetails extends StatelessWidget {
       },
     );
   }
-}
 
-class InfoTile extends StatelessWidget {
-  final String title;
-  final String? value;
-
-  const InfoTile({required this.title, required this.value, Key? key})
-    : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      width: 95,
-      child: Center(
-        child: Text('$title: ${value ?? ''}', textAlign: TextAlign.right),
+  Widget buildInfoCard(String title, String? value) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF003366),
+            fontSize: 16,
+          ),
+          textAlign: TextAlign.right,
+        ),
+        subtitle: Text(
+          value ?? '',
+          textAlign: TextAlign.right,
+          style: const TextStyle(fontSize: 15),
+        ),
       ),
     );
   }

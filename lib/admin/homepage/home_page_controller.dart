@@ -56,11 +56,11 @@ class HomePageController extends GetxController {
     update();
   }
 
-  CompagineAdminModel campaignsModel = CompagineAdminModel();
+  // CompagineAdminModel campaignsModel = CompagineAdminModel();
   CompagineAdminModel campaignsPendingModel = CompagineAdminModel();
   CompagineAdminModel campaignsDoneModel = CompagineAdminModel();
 
-  Future<CompagineAdminModel> getCampaigns() async {
+  Future<CompagineAdminModel> getCampaignsDone() async {
     try {
       Map<String, String> authHeaders = {
         'Accept': 'application/json',
@@ -72,39 +72,63 @@ class HomePageController extends GetxController {
       };
 
       final http.Response response = await NetworkUtils.get(
-        url: "get-employee-campaigns",
+        url: "get-employee-campaigns-done",
         headers: authHeaders,
       );
-      log(response.body.toString(), name: "getCampaigns response body");
+      log(response.body.toString(), name: "getCampaignsDone response body");
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        campaignsDoneModel.data ??= [];
-        campaignsPendingModel.data ??= [];
-        for (var element in CompagineAdminModel.fromJson(data).data!) {
-          if (element.status!.toLowerCase() == 'pending') {
-            campaignsPendingModel.data!.add(element);
-          } else {
-            campaignsDoneModel.data!.add(element);
-          }
-        }
-        campaignsDoneModel.data ??= [];
-        campaignsPendingModel.data ??= [];
+        campaignsDoneModel = CompagineAdminModel.fromJson(data);
         return CompagineAdminModel.fromJson(data);
       }
       return CompagineAdminModel();
     } catch (e) {
-      log(e.toString(), name: "getCampaigns catch error");
+      log(e.toString(), name: "getCampaignsDone catch error");
       campaignsDoneModel.data = [];
       campaignsPendingModel.data = [];
       return CompagineAdminModel();
     } finally {}
   }
 
+  Future<CompagineAdminModel> getCampaignsPending() async {
+    try {
+      isLoadingSet(true);
+      Map<String, String> authHeaders = {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        'Authorization':
+            'Bearer ${Get.find<StorageService>().getEmployeeTokenInfo().token!}',
+
+        //هي الكلمة بتنحط قبل ال token ليش ؟ لانو santaks
+      };
+
+      final http.Response response = await NetworkUtils.get(
+        url: "get-employee-campaigns-pending",
+        headers: authHeaders,
+      );
+      log(response.body.toString(), name: "getCampaignsPending response body");
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        campaignsPendingModel = CompagineAdminModel.fromJson(data);
+        return CompagineAdminModel.fromJson(data);
+      }
+      return CompagineAdminModel();
+    } catch (e) {
+      log(e.toString(), name: "getCampaignsPending catch error");
+      campaignsDoneModel.data = [];
+      campaignsPendingModel.data = [];
+      return CompagineAdminModel();
+    } finally {
+      isLoadingSet(false);
+    }
+  }
+
   @override
   Future onInit() async {
     super.onInit();
     isLoadingSet(true);
-    campaignsModel = await getCampaigns();
+    campaignsDoneModel = await getCampaignsDone();
+    campaignsPendingModel = await getCampaignsPending();
     isLoadingSet(false);
     // loadDonations();
   }

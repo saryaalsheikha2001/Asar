@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AdminProfilePage extends StatelessWidget {
-  final controller = Get.put(AdminProfileController());
+  // final controller = Get.put(AdminProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +20,10 @@ class AdminProfilePage extends StatelessWidget {
         elevation: 0,
       ),
       body: GetBuilder<AdminProfileController>(
-        builder: (_) {
-          final user = controller.profile.value;
-          if (user == null) {
+        init: AdminProfileController(),
+        builder: (controller) {
+          // final user = controller.profile;
+          if (controller.isLoading == true) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -33,27 +34,49 @@ class AdminProfilePage extends StatelessWidget {
                 // صورة البروفايل
                 Center(
                   child: _buildProfileImage(
-                    user.image,
-                    controller.pickedImage.value,
+                    controller.profileAdminModel.data?.image ?? "",
+                    controller.pickedImage,
                   ),
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  user.fullName ?? "",
+                  controller.profileAdminModel.data?.fullName ?? "",
                   style: AppTextStyles.titleLarge,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
 
                 // معلومات الحساب
-                _infoTile("البريد الإلكتروني", user.email),
-                _infoTile("رقم الهاتف", user.phone),
-                _infoTile("الرقم الوطني", user.nationalNumber),
-                _infoTile("الوظيفة", user.position),
-                _infoTile("العنوان", user.address),
-                // _infoTile("الفريق", user.teamId),
-                _infoTile("الاختصاص", user.specializationId as String?),
-                _infoTile("تاريخ الانتساب", user.dateAccession as String?),
+                _infoTile(
+                  "البريد الإلكتروني",
+                  controller.profileAdminModel.data!.email,
+                ),
+                _infoTile(
+                  "رقم الهاتف",
+                  controller.profileAdminModel.data!.phone,
+                ),
+                _infoTile(
+                  "الرقم الوطني",
+                  controller.profileAdminModel.data!.nationalNumber,
+                ),
+                _infoTile(
+                  "الوظيفة",
+                  controller.profileAdminModel.data!.position,
+                ),
+                _infoTile(
+                  "العنوان",
+                  controller.profileAdminModel.data!.address,
+                ),
+                // _infoTile("الفريق", controller.profileAdminModel.data!.teamId),
+                _infoTile(
+                  "الاختصاص",
+                  controller.profileAdminModel.data!.specializationId
+                      .toString(),
+                ),
+                _infoTile(
+                  "تاريخ الانتساب",
+                  controller.profileAdminModel.data!.dateAccession.toString(),
+                ),
 
                 const SizedBox(height: 25),
 

@@ -1,8 +1,9 @@
+import 'package:athar_project/admin/UpdateHamla/update_hamla.dart';
 import 'package:athar_project/admin/model/CompagineAdmin_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'home_page_controller.dart';
+import 'homepage/home_page_controller.dart';
 
 class CampaignDetailsPage extends StatelessWidget {
   final Datum campaign;
@@ -66,7 +67,8 @@ class CampaignDetailsPage extends StatelessWidget {
               Center(
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // تعديل الحملة
+                    // Get.toNamed("");
+                    Get.to(() => UpdateHamlaPage(campaign));
                   },
                   icon: const Icon(Icons.edit, color: Colors.white),
                   label: const Text(
