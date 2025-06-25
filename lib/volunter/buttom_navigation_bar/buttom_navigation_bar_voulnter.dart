@@ -32,7 +32,7 @@ class buttom_navigation_bar_voulnter
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.report),
-                label: 'الشكاوى',
+                label: 'التبرعات',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.campaign),
@@ -45,7 +45,7 @@ class buttom_navigation_bar_voulnter
               BottomNavigationBarItem(icon: Icon(Icons.person), label: 'حسابي'),
               BottomNavigationBarItem(
                 icon: Icon(Icons.monetization_on),
-                label: 'التبرعات',
+                label: 'الشكاوي',
               ),
             ],
           ),
