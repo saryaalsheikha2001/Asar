@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class EditAdminProfilePage extends StatelessWidget {
-  final controller = Get.find<AdminProfileController>();
+  final controller = Get.put(AdminProfileController());
 
   @override
   Widget build(BuildContext context) {

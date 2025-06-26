@@ -118,14 +118,14 @@ class UpdateCampaignController extends GetxController {
         to: dateController.text.trim(),
         points: int.tryParse(pointsController.text.trim()) ?? 0,
         status: "active",
-        specializationId:
-            Get.find<StorageService>()
-                .getEmployeeTokenInfo()
-                .employee!
-                .specializationId
-                .toString(),
+        specializationId: campaign.specialization!.id.toString(),
+        // Get.find<StorageService>()
+        //     .getEmployeeTokenInfo()
+        //     .employee!
+        //     .specializationId
+        //     .toString(),
         campaignTypeId: campaign.campaignType!.id.toString(),
-        teamId: 1,
+        teamId: campaign.team!.id!,
         employeeId:
             Get.find<StorageService>().getEmployeeTokenInfo().employee!.id!,
         // image: _image!,
@@ -220,6 +220,8 @@ class UpdateCampaignController extends GetxController {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
+    } finally {
+      Get.find<HomePageController>().getCampaignsPending();
     }
   }
 

@@ -1,7 +1,16 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 import 'package:athar_project/volunter/details_about_voulnter/detail_voulnter_controller.dart';
+import 'package:athar_project/volunter/storage/volunteer_storage_service.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ProfileVoulnter extends StatelessWidget {
   ProfileVoulnter({Key? key}) : super(key: key);
@@ -23,10 +32,100 @@ class ProfileVoulnter extends StatelessWidget {
     return DateFormat('dd-MM-yyyy').format(date);
   }
 
+  Future<void> generateCertificate() async {
+    const apiUrl =
+        'http://volunteer.test-holooltech.com/api/generateCertificate';
+    Map<String, String> authHeaders = {
+      'Accept': 'application/json',
+      'Content-type': 'application/json',
+      'Authorization':
+          'Bearer ${Get.find<StorageService>().getVolunteerTokenInfo().token!}',
+      //هي الكلمة بتنحط قبل ال token ليش ؟ لانو santaks
+    };
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl), headers: authHeaders);
+      log(response.statusCode.toString(), name: "response.statusCode");
+      log(
+        json.decode(response.body)["message"].toString(),
+        name: "response.body",
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final message = data['message'];
+        final path = data['certificate_path'];
+        final fullUrl = 'http://volunteer.test-holooltech.com/$path';
+
+        // اطلب صلاحية التخزين
+        final status = await Permission.storage.request();
+        if (!status.isGranted) {
+          BotToast.showText(
+            text: "لم يتم منح إذن التخزين!' ",
+            align: Alignment.center,
+            contentColor: Colors.redAccent,
+            textStyle: TextStyle(color: Colors.white),
+          );
+          return;
+        }
+
+        // حمّل الملف
+        final pdfResponse = await http.get(Uri.parse(fullUrl));
+        if (pdfResponse.statusCode == 200) {
+          final bytes = pdfResponse.bodyBytes;
+          final dir = await getExternalStorageDirectory();
+          final downloadPath = '${dir!.path}/شهادة_تطوع.pdf';
+          final file = File(downloadPath);
+          await file.writeAsBytes(bytes);
+
+          Get.snackbar(
+            'تم الحفظ',
+            'تم حفظ الشهادة في المسار:\n$downloadPath',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 5),
+          );
+        } else {
+          BotToast.showText(
+            text: "تعذر تحميل ملف الشهادة ",
+            align: Alignment.center,
+            contentColor: Colors.redAccent,
+            textStyle: TextStyle(color: Colors.white),
+          );
+        }
+        // صفشلاشش30ممممم
+      } else {
+        final data = jsonDecode(response.body);
+        BotToast.showText(
+          text:
+              " لا يمكنك إصدار شهادة لأن لديك أقل من 100 نقطة. حذث خطا اثناء تحميل الشهادة",
+          align: Alignment.center,
+          contentColor: Colors.redAccent,
+          textStyle: TextStyle(color: Colors.white),
+        );
+      }
+    } catch (e) {
+      BotToast.showText(
+        text: "تهذر الاتصال ب الخادم",
+        align: Alignment.center,
+        contentColor: Colors.redAccent,
+        textStyle: TextStyle(color: Colors.white),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: generateCertificate,
+            icon: const Icon(Icons.picture_as_pdf, color: Colors.white),
+            tooltip: 'الحصول على شهادة حضور',
+          ),
+        ],
         title: const Text(
           'الحساب الشخصي',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -65,11 +164,13 @@ class ProfileVoulnter extends StatelessWidget {
               CircleAvatar(
                 radius: 60,
                 backgroundColor: Colors.grey[300],
-                backgroundImage: imageUrl != null
-                    ? NetworkImage(imageUrl)
-                    : const AssetImage(
-                        'assets/images/photo_2025-04-16_14-38-02-removebg-preview.png',
-                      ) as ImageProvider,
+                backgroundImage:
+                    imageUrl != null
+                        ? NetworkImage(imageUrl)
+                        : const AssetImage(
+                              'assets/images/photo_2025-04-16_14-38-02-removebg-preview.png',
+                            )
+                            as ImageProvider,
               ),
               const SizedBox(height: 30),
               InfoTile(

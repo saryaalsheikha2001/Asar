@@ -42,7 +42,7 @@ class Datum {
   CampaignType? campaignType;
   Team? team;
   Employee? employee;
-  List<dynamic>? volunteers;
+  List<Volunteer>? volunteers;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -89,7 +89,9 @@ class Datum {
     volunteers:
         json["volunteers"] == null
             ? []
-            : List<dynamic>.from(json["volunteers"].map((x) => x)),
+            : List<Volunteer>.from(
+              json["volunteers"].map((x) => Volunteer.fromJson(x)),
+            ),
     createdAt:
         json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt:
@@ -243,6 +245,61 @@ class Team {
     "phone": phone,
     "bank_account_number": bankAccountNumber,
     "email": email,
+    "created_at": createdAt!.toIso8601String(),
+    "updated_at": updatedAt!.toIso8601String(),
+  };
+}
+
+class Volunteer {
+  int? id;
+  String? fullName;
+  String? nationalNumber;
+  String? nationality;
+  String? phone;
+  String? email;
+  String? image;
+  DateTime? birthDate;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  Volunteer({
+    this.id,
+    this.fullName,
+    this.nationalNumber,
+    this.nationality,
+    this.phone,
+    this.email,
+    this.image,
+    this.birthDate,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Volunteer.fromJson(Map<String, dynamic> json) => Volunteer(
+    id: json["id"],
+    fullName: json["full_name"],
+    nationalNumber: json["national_number"],
+    nationality: json["nationality"],
+    phone: json["phone"],
+    email: json["email"],
+    image: json["image"],
+    birthDate:
+        json["birth_date"] == null ? null : DateTime.parse(json["birth_date"]),
+    createdAt:
+        json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt:
+        json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "full_name": fullName,
+    "national_number": nationalNumber,
+    "nationality": nationality,
+    "phone": phone,
+    "email": email,
+    "image": image,
+    "birth_date": birthDate!.toIso8601String(),
     "created_at": createdAt!.toIso8601String(),
     "updated_at": updatedAt!.toIso8601String(),
   };

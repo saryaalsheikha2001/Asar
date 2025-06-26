@@ -1,136 +1,138 @@
+import 'dart:developer';
+
+import 'package:athar_project/admin/Attendance/attendance_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'attendance_model.dart';
+import 'package:get/get.dart';
+import 'package:athar_project/admin/model/CompagineAdmin_model.dart';
 
-class AttendanceDetailsPage extends StatelessWidget {
-  final AttendanceModel attendance;
-
-  const AttendanceDetailsPage({super.key, required this.attendance});
-
-  String imageUrl(String? path) {
-    return path != null
-        ? 'http://volunteer.test-holooltech.com/storage/$path'
-        : '';
-  }
+class AttendancePage extends StatelessWidget {
+  final int id;
+  final List<Volunteer> volunteers;
+  const AttendancePage({super.key, required this.id, required this.volunteers});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("تفاصيل الحضور"),
-        backgroundColor: const Color.fromRGBO(0, 51, 102, 1),
-        foregroundColor: Colors.white,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            /// Volunteer Info Card
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: 3,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(16),
-                leading: CircleAvatar(
-                  radius: 28,
-                  backgroundImage:
-                      attendance.volunteerImage != null
-                          ? NetworkImage(imageUrl(attendance.volunteerImage!))
-                          : null,
-                  child:
-                      attendance.volunteerImage == null
-                          ? const Icon(Icons.person, size: 28)
-                          : null,
-                ),
-                title: Text(
-                  attendance.volunteerName,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+    return GetBuilder<AttendanceController>(
+      init: AttendanceController(id, volunteers),
+      builder: (controller) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.blue[900],
+            title: const Text(
+              "أخذ الحضور",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          body:
+              controller.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                    itemCount: controller.attendancev2Model.length,
+                    itemBuilder: (context, index) {
+                      final item = controller.attendancev2Model[index];
+                      return Card(
+                        margin: const EdgeInsets.all(8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.volunteerName ?? "",
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  DropdownButton<String>(
+                                    value:
+                                        controller.reasonOfChange[item
+                                            .volunteerId],
+                                    hint: const Text("سبب التغيير"),
+                                    items:
+                                        controller.reasonsList
+                                            .map(
+                                              (reason) => DropdownMenuItem(
+                                                value: reason,
+                                                child: Text(reason),
+                                              ),
+                                            )
+                                            .toList(),
+                                    onChanged: (val) {
+                                      controller.reasonOfChange[item
+                                              .volunteerId!] =
+                                          val!;
+                                      controller.update();
+                                    },
+                                  ),
+                                  const SizedBox(width: 16),
+                                  ElevatedButton.icon(
+                                    onPressed:
+                                        () => controller.pickImage(
+                                          item.volunteerId!,
+                                        ),
+                                    icon: const Icon(Icons.image),
+                                    label: const Text("صورة"),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              ElevatedButton(
+                                onPressed: () {
+                                  controller.submitAttendance(
+                                    volunteerId: item.volunteerId!,
+                                    campaignId: id,
+                                    attendanceId: item.attendaceId,
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  // backgroundColor: Colors.green,
+                                ),
+                                child:
+                                    item.attendaceId == null
+                                        ? Text("إرسال")
+                                        : Text("تعديل"),
+                              ),
+                              // Row(
+                              //   children: [
+                              //     ElevatedButton(
+                              //       onPressed: () {
+                              //         controller.submitAttendance(
+                              //           item: item,
+                              //           isPresent: true,
+                              //         );
+                              //       },
+                              //       style: ElevatedButton.styleFrom(
+                              //         backgroundColor: Colors.green,
+                              //       ),
+                              //       child: const Text("حضور"),
+                              //     ),
+                              //     const SizedBox(width: 8),
+                              //     ElevatedButton(
+                              //       onPressed: () {
+                              //         controller.submitAttendance(
+                              //           item: item,
+                              //           isPresent: false,
+                              //         );
+                              //       },
+                              //       style: ElevatedButton.styleFrom(
+                              //         backgroundColor: Colors.red,
+                              //       ),
+                              //       child: const Text("غياب"),
+                              //     ),
+                              //   ],
+                              // ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                ),
-                subtitle: Text("Total Points: ${attendance.totalPoints}"),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            /// Employee Info Card
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: 3,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(16),
-                leading: CircleAvatar(
-                  radius: 28,
-                  backgroundImage:
-                      attendance.employeeImage != null
-                          ? NetworkImage(imageUrl(attendance.employeeImage!))
-                          : null,
-                  child:
-                      attendance.employeeImage == null
-                          ? const Icon(Icons.person_pin, size: 28)
-                          : null,
-                ),
-                title: Text(
-                  attendance.employeeName,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                subtitle: const Text("Supervisor"),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            /// Status
-            Row(
-              children: [
-                const Icon(Icons.check_circle_outline, color: Colors.grey),
-                const SizedBox(width: 8),
-                Text(
-                  attendance.isAttendance ? "Present ✅" : "Absent ❌",
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 16),
-
-            /// Attendance Image
-            if (attendance.image != null)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  imageUrl(attendance.image!),
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-
-            const SizedBox(height: 16),
-
-            /// Date Info
-            Row(
-              children: [
-                const Icon(Icons.calendar_today, size: 18, color: Colors.black),
-                const SizedBox(width: 8),
-                Text(
-                  "Attendance Date: ${DateFormat('MMM d, y').format(attendance.createdAt)}",
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+        );
+      },
     );
   }
 }

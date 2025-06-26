@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:athar_project/admin/login/LoginController_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +16,6 @@ class Login_admin extends StatelessWidget {
       body: GetBuilder<LoginController>(
         init: LoginController(),
         builder: (controller) {
-          controller.selectedTeam = controller.teams.first;
           return controller.isLoading
               ? Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
@@ -48,7 +49,7 @@ class Login_admin extends StatelessWidget {
                           // Dropdown
                           DropdownButtonFormField<String>(
                             decoration: InputDecoration(
-                              labelText: 'اسم الفريق',
+                              labelText: 'نوع الحساب',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -63,8 +64,10 @@ class Login_admin extends StatelessWidget {
                                     child: Text(team),
                                   );
                                 }).toList(),
-                            onChanged:
-                                (value) => controller.selectedTeam = value!,
+                            onChanged: (value) {
+                              controller.selectedTeam = value!;
+                              controller.update();
+                            },
                           ),
 
                           const SizedBox(height: 20),

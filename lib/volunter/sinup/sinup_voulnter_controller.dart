@@ -4,7 +4,10 @@ import 'dart:developer';
 import 'package:athar_project/network.dart';
 import 'package:athar_project/volunter/core/model/login_volunteer_model.dart';
 import 'package:athar_project/volunter/core/model/specializations_model.dart';
+import 'package:athar_project/volunter/details_about_voulnter/detail_voulnter_controller.dart';
 import 'package:athar_project/volunter/details_about_voulnter/update_details_voulnter.dart';
+import 'package:athar_project/volunter/homepage/home_page_controller.dart';
+import 'package:athar_project/volunter/join_with_hamla/joined_with_hamla_controller.dart';
 import 'package:athar_project/volunter/sinup/voulnter_from.dart';
 import 'package:athar_project/volunter/storage/volunteer_storage_service.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +80,10 @@ class sinup_voulnter_controller extends GetxController {
           storage.storeVolunteerTokenInfo(
             LoginVolunteerModel.fromJson(json.decode(response.body)),
           );
-          storage.setLoginAccountType(false);
+          storage.setLoginAccountType(false, false);
+          Get.put(DetailVoulnterController()).onInit();
+          Get.put(HamlaController()).onInit();
+          Get.put(JoinedCampaignController()).onInit();
           Get.to(VolunteerFormScreen());
         } else {
           Get.snackbar(

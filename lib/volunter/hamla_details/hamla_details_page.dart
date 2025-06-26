@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:athar_project/volunter/chat_voulnter/chat_rom_pages.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -118,76 +119,83 @@ class HamlaDetails extends StatelessWidget {
                             //   );
                             //   return;
                             // }
-                            if (joinedController.joinedCampaigns.isEmpty) {
-                              joinedController.joinCampaign(data!);
-                              Get.snackbar(
-                                'تم الاشتراك',
-                                'تم الاشتراك بالحملة بنجاح!',
-                                backgroundColor: Colors.green.shade100,
+                            // if (joinedController.joinedCampaigns.isEmpty) {
+                            //   joinedController.joinCampaign(data!);
+                            //   BotToast.showText(
+                            //     text: "خطأ\n",
+                            //     align: Alignment.center,
+                            //     contentColor: Colors.green,
+                            //     textStyle: TextStyle(color: Colors.white),
+                            //   );
+                            //   // Get.snackbar(
+                            //   //   'تم الاشتراك',
+                            //   //   'تم الاشتراك بالحملة بنجاح!',
+                            //   //   backgroundColor: Colors.green.shade100,
+                            //   // );
+                            // } else {
+                            //   BotToast.showText(
+                            //     text: "خطأ\انت مشترك ب الحملة",
+                            //     align: Alignment.center,
+                            //     contentColor: Colors.redAccent,
+                            //     textStyle: TextStyle(color: Colors.white),
+                            //   );
+                            // }
+
+                            try {
+                              final token =
+                                  Get.find<StorageService>()
+                                      .getVolunteerTokenInfo()
+                                      .token ??
+                                  '';
+                              final url =
+                                  'http://volunteer.test-holooltech.com/api/campaigns/${data?.id}/volunteers';
+                              final response = await http.post(
+                                Uri.parse(url),
+                                headers: {
+                                  'Accept': 'application/json',
+                                  'Content-Type': 'application/json',
+                                  'Authorization': 'Bearer $token',
+                                },
                               );
-                            } else {
+
+                              log(
+                                response.statusCode.toString(),
+                                name: "response.statusCode",
+                              );
+                              log(
+                                response.body.toString(),
+                                name: "response.body",
+                              );
+
+                              if (response.statusCode == 200) {
+                                final hamla = Hamla(
+                                  id: data?.id ?? 0,
+                                  teamName: data?.team?.teamName ?? '',
+                                  image:
+                                      "http://volunteer.test-holooltech.com/${data?.team?.logo ?? ''}",
+                                  time: data?.from?.toIso8601String() ?? '',
+                                );
+                                // await joinedController.joinCampaign(hamla);
+                                Get.snackbar(
+                                  'تم الاشتراك',
+                                  'تم الاشتراك بالحملة بنجاح!',
+                                  backgroundColor: Colors.green.shade100,
+                                );
+                                Get.back();
+                              } else {
+                                Get.snackbar(
+                                  'خطأ',
+                                  'فشل الاشتراك بالحملة.',
+                                  backgroundColor: Colors.red.shade100,
+                                );
+                              }
+                            } catch (e) {
                               Get.snackbar(
                                 'خطأ',
-                                'أنت مشترك بحملة بالفعل.',
+                                'حدث خطأ أثناء الاتصال بالسيرفر.',
                                 backgroundColor: Colors.red.shade100,
                               );
                             }
-
-                            // try {
-                            //   final token =
-                            //       Get.find<StorageService>()
-                            //           .getVolunteerTokenInfo()
-                            //           .token ??
-                            //       '';
-                            //   final url =
-                            //       'http://volunteer.test-holooltech.com/api/campaigns/${data.id}/volunteers';
-                            //   final response = await http.post(
-                            //     Uri.parse(url),
-                            //     headers: {
-                            //       'Accept': 'application/json',
-                            //       'Content-Type': 'application/json',
-                            //       'Authorization': 'Bearer $token',
-                            //     },
-                            //   );
-
-                            //   log(
-                            //     response.statusCode.toString(),
-                            //     name: "response.statusCode",
-                            //   );
-                            //   log(
-                            //     response.body.toString(),
-                            //     name: "response.body",
-                            //   );
-
-                            //   if (response.statusCode == 200) {
-                            //     final hamla = Hamla(
-                            //       id: data.id ?? 0,
-                            //       teamName: data.team?.teamName ?? '',
-                            //       image:
-                            //           "http://volunteer.test-holooltech.com/${data.team?.logo ?? ''}",
-                            //       time: data.from?.toIso8601String() ?? '',
-                            //     );
-                            //     await joinedController.joinCampaign(hamla);
-                            //     Get.snackbar(
-                            //       'تم الاشتراك',
-                            //       'تم الاشتراك بالحملة بنجاح!',
-                            //       backgroundColor: Colors.green.shade100,
-                            //     );
-                            //     Get.back();
-                            //   } else {
-                            //     Get.snackbar(
-                            //       'خطأ',
-                            //       'فشل الاشتراك بالحملة.',
-                            //       backgroundColor: Colors.red.shade100,
-                            //     );
-                            //   }
-                            // } catch (e) {
-                            //   Get.snackbar(
-                            //     'خطأ',
-                            //     'حدث خطأ أثناء الاتصال بالسيرفر.',
-                            //     backgroundColor: Colors.red.shade100,
-                            //   );
-                            // }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF003366),

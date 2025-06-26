@@ -136,10 +136,10 @@ class ButtomNavigationBarPage
                 icon: Icon(Icons.monetization_on),
                 label: 'التبرعات',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person_pin_circle_outlined),
-                label: 'الحضور ',
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(Icons.person_pin_circle_outlined),
+              //   label: 'الحضور ',
+              // ),
               BottomNavigationBarItem(icon: Icon(Icons.person), label: 'حسابي'),
             ],
           ),
@@ -160,13 +160,13 @@ class ButtomNavigationBarPage
 
       case 2:
         return DonationsPage();
-      case 4:
+      case 3:
         // return DonationsPage();
         return AdminProfilePage();
 
-      case 3:
-        final attendanceController = Get.put(AttendanceController());
-        return AttendancesListPage(controller: attendanceController);
+      // case 3:
+      //   // final attendanceController = Get.put(AttendanceController());
+      //   return AttendancePage();
 
       default:
         return Center(child: Text('لا توجد بيانات'));

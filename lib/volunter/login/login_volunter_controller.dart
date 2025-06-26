@@ -48,11 +48,12 @@ class login_volunter_controller extends GetxController {
           storage.storeVolunteerTokenInfo(
             LoginVolunteerModel.fromJson(json.decode(response.body)),
           );
-          storage.setLoginAccountType(false);
+          storage.setLoginAccountType(false, false);
           Get.put(HamlaController()).onInit();
           Get.put(JoinedCampaignController()).onInit();
           Get.put(DetailVoulnterController()).onInit();
-          Get.offAllNamed('/homepage_voulnter');
+          Get.offAllNamed('/buttom_navigation_bar_voulnter');
+          // Get.offAllNamed('/homepage_voulnter');
         } else {
           Get.snackbar(
             "فشل",

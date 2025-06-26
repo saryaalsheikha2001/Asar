@@ -96,13 +96,18 @@ class StorageService {
 
   /// Account Types
   static const Volunteer_User_Account = "Volunteer_User_Account";
+  static const Payment_Employee_Account = "Payment_Employee_Account";
   static const Employee_Account = "Employee_Account";
   static const NA_Account = "NA_Account";
 
-  void setLoginAccountType(bool isEmployee) {
+  void setLoginAccountType(bool isEmployee, bool isPaymentEmployee) {
     storage.write(
       Account_Type,
-      isEmployee ? Employee_Account : Volunteer_User_Account,
+      !isEmployee
+          ? Volunteer_User_Account
+          : isPaymentEmployee
+          ? Payment_Employee_Account
+          : Employee_Account,
     );
   }
 

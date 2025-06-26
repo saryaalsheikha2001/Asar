@@ -53,10 +53,10 @@ class CampaignController extends GetxController {
         }),
       );
       log(response.body.toString(), name: "createCampaign response body");
-      log(
-        jsonDecode(response.body)["message"],
-        name: "createCampaign response body",
-      );
+      // log(
+      //   jsonDecode(response.body)["message"],
+      //   name: "createCampaign response body",
+      // );
       log(
         response.statusCode.toString(),
         name: "createCampaign response statuscode",

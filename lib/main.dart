@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:athar_project/admin/Attendance/Attendance.dart';
@@ -23,29 +24,37 @@ import 'package:athar_project/volunter/login/login_voulnter.dart';
 import 'package:athar_project/volunter/details_about_voulnter/profile_voulnter_page.dart';
 import 'package:athar_project/volunter/shakawa/shakawa.dart';
 import 'package:athar_project/volunter/sinup/sinup_voulnter.dart';
-import 'package:athar_project/volunter/tabroat/tabroat.dart';
+import 'package:athar_project/volunter/tabroat/tabroat_page.dart';
 import 'package:athar_project/volunter/storage/volunteer_storage_service.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:athar_project/admin/homepage/home_page_controller.dart';
 
+final botToastBuilder = BotToastInit();
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   try {
     await GetStorage.init();
-
     Get.put(StorageService());
-    Get.put(HomePageController());
-    Get.put(JoinedCampaignController());
-    Get.put(DetailVoulnterController());
+    if (Get.find<StorageService>().getAccountType() !=
+        StorageService.Payment_Employee_Account) {
+      Get.put(HomePageController());
+      Get.put(JoinedCampaignController());
+      Get.put(DetailVoulnterController());
+    }
   } catch (e) {
     log(e.toString());
   }
 
   runApp(const MyApp());
-  // log(Get.find<StorageService>().getVolunteerTokenInfo().token!, name: "Token");
-  // log(Get.find<StorageService>().getEmployeeTokenInfo().token!, name: "Token");
+  log(Get.find<StorageService>().getVolunteerTokenInfo().token!, name: "Token");
+  // log(
+  //   jsonEncode(Get.find<StorageService>().getEmployeeTokenInfo()),
+  //   name: "Token",
+  // );
 }
 
 class MyApp extends StatelessWidget {
@@ -60,6 +69,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // home: ProductView(),
       initialRoute: "/splashscreen",
+      navigatorObservers: [BotToastNavigatorObserver()],
+      builder: (context, child) {
+        child = botToastBuilder(context, child);
+        return child;
+      },
       getPages: [
         GetPage(name: "/splashscreen", page: () => const SplashScreen()),
         GetPage(

@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:athar_project/admin/core/model/login_admin_model.dart';
 import 'package:athar_project/admin/homepage/home_page_controller.dart';
+import 'package:athar_project/employee_payment/payment_employee_main_page.dart';
 import 'package:athar_project/network.dart';
 import 'package:athar_project/volunter/storage/volunteer_storage_service.dart';
 import 'package:email_validator_flutter/email_validator_flutter.dart';
@@ -12,7 +13,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class LoginController extends GetxController {
-  var selectedTeam = '';
+  String selectedTeam = 'موظف';
   final passwordController = TextEditingController();
   var obscurePassword = false;
   TextEditingController emailTextEditingController = TextEditingController();
@@ -24,12 +25,17 @@ class LoginController extends GetxController {
     update();
   }
 
-  final List<String> teams = ["فريق التميز", "فريق سند", "فريق عمرها"];
+  final List<String> teams = ["موظف", "موظف مالي"];
   final box = GetStorage();
 
   void togglePasswordVisibility() {
     obscurePassword = !obscurePassword;
     update();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
   }
 
   Future<dynamic> login() async {
@@ -52,11 +58,14 @@ class LoginController extends GetxController {
         storage.storeEmployeeTokenInfo(
           LoginAdminModel.fromJson(json.decode(response.body)),
         );
-        storage.setLoginAccountType(true);
-        Get.put(HomePageController()).onInit();
-        // Get.put(JoinedCampaignController());
-        // Get.put(DetailVoulnterController());
-        Get.offAllNamed('/buttom/navigation/bar/page');
+        bool isPaymentEmployee = (selectedTeam == 'موظف مالي');
+        storage.setLoginAccountType(true, isPaymentEmployee);
+        if (selectedTeam == 'موظف مالي') {
+          Get.offAll(PaymentEmployeeMainPage());
+        } else {
+          Get.put(HomePageController()).onInit();
+          Get.offAllNamed('/buttom/navigation/bar/page');
+        }
       } else {
         Get.snackbar(
           "فشل",

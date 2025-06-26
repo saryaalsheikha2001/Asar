@@ -1,11 +1,13 @@
 import 'package:athar_project/volunter/buttom_navigation_bar/buttom_navigation_bar_voulnter_controller.dart';
+import 'package:athar_project/volunter/details_about_voulnter/detail_voulnter_controller.dart';
 
 import 'package:athar_project/volunter/homepage/homepage_voulnter.dart';
 import 'package:athar_project/volunter/join_with_hamla/joined_with_hamla.dart';
 import 'package:athar_project/volunter/details_about_voulnter/profile_voulnter_page.dart';
 import 'package:athar_project/volunter/shakawa/shakawa.dart';
-import 'package:athar_project/volunter/tabroat/tabroat.dart';
+import 'package:athar_project/volunter/tabroat/tabroat_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,6 +30,7 @@ class buttom_navigation_bar_voulnter
             onTap: (value) {
               controller.currentIndex = value;
               controller.update();
+              if (value == 3) Get.put(DetailVoulnterController()).onInit();
             },
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
